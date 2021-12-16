@@ -1,53 +1,52 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 
 function Home() {
   const [item, SearchData] = useState([]);
-  const [cryptos, setCryptos] = useState([]);
-  const [origCryptosCount, setOrigCryptosCount] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [origMovieCount, setOrigMovieCount] = useState([]);
 
   useEffect(() => {
     fetchItems();
   }, []);
 
   const fetchItems = async () => {
-    const url = "weatherforecast";
+    const url = "Movie.json";
     const response = await fetch(url);
     const info = await response.json();
-    console.log(info)
-    setCryptos(info); 
-    setOrigCryptosCount(info);
+    console.log(info["movies"]);
+    setMovies(info["movies"]);
+    setOrigMovieCount(info["movies"]);
   };
-  const Search = key => {
-    const newResults = origCryptosCount.filter(crypto => crypto.summary.includes(key));
-    console.log('newResults', newResults);
-    setCryptos(newResults);
+  const Search = (key) => {
+    const newResults = origMovieCount.filter((movie) =>
+      movie.title.includes(key)
+    );
+    console.log("newResults", newResults);
+    setMovies(newResults);
   };
 
-  const cryptoJsx = cryptos.map(forecast => (
-    <div className="card">  
-              <img className="card-img-top img-thumbnail" src="" alt="Card image cap" />
-
-              <div className="card-body">
-                <h5 className="card-title">{forecast.date}</h5>
-                <p className="card-text">
-                 {forecast.summary}
-                </p>
-                <p className="card-text">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </p>
-              </div>
-            </div>
+  const movieJsx = movies.map((movie) => (
+    <div className="card" >
+    <img class="bd-placeholder-img card-img-top" width="100%" height="180" src={movie.posterUrl} />
+      <div className="card-body">
+        <h5 className="card-title">{movie.title}</h5>
+        <p className="card-text">{movie.plot}</p>
+        <p className="card-text">
+          <small class="text-muted">{movie.year}</small>
+        </p>
+      </div>
+    </div>
   ));
 
   return (
     <div>
-      Search:
-      <input type="text" onChange={event => Search(event.target.value)} />
-      <div className="card my-3">
-      {cryptoJsx}
-      </div>
+
+      <form class="form-inline my-2 my-lg-0">
+      Search <input class="form-control mr-sm-2" type="text" onChange={(event) => Search(event.target.value)} placeholder="Search" aria-label="Search" />
+    </form>
+      <div className="card mb-3 my-3">{movieJsx}</div>
     </div>
   );
 }
