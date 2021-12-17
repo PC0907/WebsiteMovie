@@ -9,8 +9,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System;
 using DotNetAssignment.Models;
+using DotNetAssignment.Services;
 
 namespace DotNetAssignment.Controllers
 {
@@ -24,19 +24,6 @@ namespace DotNetAssignment.Controllers
         public UserController(ILogger<UserController> logger)
         {
             _logger = logger;
-        }
-
-        [HttpGet("getData")]
-        public IEnumerable<User> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new User
-            {
-                username = "test",
-                hashpassword = "test",
-                mail = "test"
-            })
-            .ToArray();
         }
 
        [Authorize]
@@ -59,9 +46,9 @@ namespace DotNetAssignment.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult LoginUser([FromBody] User user)
+        public LocalRedirectResult LoginUser([FromForm] User user)
         {
-            /*
+            
             if (UserServices.LoginUser(user))
             {
                 var claims = new List<Claim>
@@ -71,10 +58,9 @@ namespace DotNetAssignment.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, "Login");
 
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return StatusCode(202);
+                return LocalRedirect("/");;
             }
-            */
-            return StatusCode(401);
+            return LocalRedirect("/login?invalid=1");
             
         }
 
@@ -84,23 +70,20 @@ namespace DotNetAssignment.Controllers
             //SignOutAsync is Extension method for SignOut    
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             //Redirect to home page    
-            return Redirect("login");
+            return Redirect("/login");
         }
-        /*
-        [HttpPost("signup")]   //Route to register the user
 
-
-        public IActionResult RegisterUser([FromForm] User user) 
+        [HttpPost("signup")]
+        public LocalRedirectResult RegisterUser([FromBody] User user) 
         {
             if (UserServices.RegisterUser(user))
             {
-               return StatusCode(201);
+               return LocalRedirect("/login?registered=1");
             }
-           return StatusCode(406);
+           return LocalRedirect("/login?invalid=1");
            
         }
-        */
-        /*        
+        /*
         [HttpGet("getUser")]
 
         public async Task<User>GetUser([FromQuery] string username)

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
+import 'bootstrap/dist/css/bootstrap.css';
 
 function Home() {
   const [item, SearchData] = useState([]);
@@ -28,25 +29,27 @@ function Home() {
   };
 
   const movieJsx = movies.map((movie) => (
-    <div className="card" >
+
+    <div class="column">
+    <div class="card">
     <img class="bd-placeholder-img card-img-top" width="100%" height="180" src={movie.posterUrl} />
-      <div className="card-body">
-        <h5 className="card-title">{movie.title}</h5>
-        <p className="card-text">{movie.plot}</p>
-        <p className="card-text">
-          <small class="text-muted">{movie.year}</small>
-        </p>
-      </div>
+      <h3>{movie.title}</h3>
+      <p>{movie.year}</p>
+      <p>{movie.plot}</p>
+      <form>
+      <input class="btn btn-primary" value="Add to my watchlist"/> 
+      </form>
     </div>
+  </div>
   ));
 
   return (
     <div>
 
       <form class="form-inline my-2 my-lg-0">
-      Search <input class="form-control mr-sm-2" type="text" onChange={(event) => Search(event.target.value)} placeholder="Search" aria-label="Search" />
+      Search the movie by name <input class="form-control mr-sm-2" type="text" onChange={(event) => Search(event.target.value)} placeholder="Search" aria-label="Search" />
     </form>
-      <div className="card mb-3 my-3">{movieJsx}</div>
+      <div class="row my-3">{movieJsx}</div>
     </div>
   );
 }
