@@ -20,6 +20,7 @@ function Home() {
     setMovies(info["movies"]);
     setOrigMovieCount(info["movies"]);
   };
+
   const Search = (key) => {
     const newResults = origMovieCount.filter((movie) =>
       movie.title.includes(key)

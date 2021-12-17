@@ -26,22 +26,12 @@ namespace DotNetAssignment.Controllers
             _logger = logger;
         }
 
-       [Authorize]
        [HttpGet("checkAuth")]
        public bool CheckAuthentication()
         {
             Console.WriteLine(HttpContext.Request.Cookies.ContainsKey("AuthCookie"));
             if (HttpContext.Request.Cookies.ContainsKey("AuthCookie")) return true;
             return false;
-
-        }
-
-
-       [HttpGet("test")]
-       public bool Check()
-        {
-            Console.WriteLine("heyy");
-            return true;
 
         }
 
@@ -67,20 +57,18 @@ namespace DotNetAssignment.Controllers
         [HttpGet("logout")]
         public async Task<IActionResult> LogOut()
         {
-            //SignOutAsync is Extension method for SignOut    
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            //Redirect to home page    
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);  
             return Redirect("/login");
         }
 
         [HttpPost("signup")]
-        public LocalRedirectResult RegisterUser([FromBody] User user) 
+        public LocalRedirectResult RegisterUser([FromForm] User user) 
         {
             if (UserServices.RegisterUser(user))
             {
                return LocalRedirect("/login?registered=1");
             }
-           return LocalRedirect("/login?invalid=1");
+           return LocalRedirect("/signup?invalid=1");
            
         }
         /*

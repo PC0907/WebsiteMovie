@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./Login.css";
 
-export class Login extends Component {
-  static displayName = Login.name;
+export class Signup extends Component {
+  static displayName = Signup.name;
 
   constructor(props) {
     super(props);
-    this.state = { Register: 0, Invalid: 0, loading: true };
+    this.state = {Invalid: 0, loading: true };
   }
   /*let history = useHistory();
 const handleRoute = () => {
@@ -16,16 +16,15 @@ const handleRoute = () => {
     this.populateData();
   }
 
-  static renderDiv(Register, Invalid) {
+  static renderDiv(Invalid) {
     return (
       <>
         <div className='container1'>
           <div className='d-flex justify-content-center h-100'>
             <div className='card'>
               <div className='card-header'>
-                <h3>Log In</h3>
-                 {Invalid == "1" ? <small>Wrong email or password, please try again</small> : ""}
-                 {Register == "1" ? <small>Thank you for registering, please login to your account</small> : ""}
+                <h3>Signup</h3>
+                 {Invalid == "1" ? <small>The account already exists</small> : ""}
                 <div className='d-flex justify-content-end social_icon'>
                   <span>
                     <i className='fab fa-facebook-square'></i>
@@ -39,7 +38,20 @@ const handleRoute = () => {
                 </div>
               </div>
               <div className='card-body'>
-                <form action='User/login' method='post'>
+                <form action='User/signup' method='post'>
+                  <div className='input-group form-group'>
+                    <div className='input-group-prepend'>
+                      <span className='input-group-text'>
+                        <i className='fas fa-user'></i>
+                      </span>
+                    </div>
+                    <input
+                      type='text'
+                      name='username'
+                      className='form-control'
+                      placeholder='Username'
+                    />
+                  </div>
                   <div className='input-group form-group'>
                     <div className='input-group-prepend'>
                       <span className='input-group-text'>
@@ -71,19 +83,11 @@ const handleRoute = () => {
                   <div className='form-group'>
                     <input
                       type='submit'
-                      value='Login'
+                      value='Signup'
                       className='btn float-right login_btn'
                     />
                   </div>
                 </form>
-              </div>
-              <div className='card-footer'>
-                <div className='d-flex justify-content-center links'>
-                  Don't have an account?<a href='/signup'>Sign Up</a>
-                </div>
-                <div className='d-flex justify-content-center'>
-                  <a href='#'>Forgot your password?</a>
-                </div>
               </div>
             </div>
           </div>
@@ -98,7 +102,7 @@ const handleRoute = () => {
         <em>Loading..</em>
       </p>
     ) : (
-      Login.renderDiv(this.state.Register, this.state.Invalid)
+      Signup.renderDiv(this.state.Invalid)
     );
 
     return <div>{contents}</div>;
@@ -107,10 +111,8 @@ const handleRoute = () => {
   async populateData() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
-    console.log(params);
-    const register = params.registered;
     const invalid = params.invalid;
 
-    this.setState({ Register: register, Invalid: invalid, loading: false });
+    this.setState({ Invalid: invalid, loading: false });
   }
 }
