@@ -5,6 +5,7 @@ import Home from './components/Home';
 import {Login} from './components/Login';
 import {Signup} from './components/Signup';
 import 'bootstrap/dist/css/bootstrap.css';
+import Profile from './components/Profile';
 import './custom.css'
 
 export default class App extends Component {
@@ -16,6 +17,7 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/login' component={Login} />
         <Route path='/signup' component={Signup} />
+        <Route exact path='/profile' component={Profile} />
       </Layout>
     );
   }

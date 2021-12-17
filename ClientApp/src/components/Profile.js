@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 
-function Home() {
+function Profile() {
   const [item, SearchData] = useState([]);
   const [movies, setMovies] = useState([]);
   const [origMovieCount, setOrigMovieCount] = useState([]);
@@ -17,8 +17,15 @@ function Home() {
     const response = await fetch(url);
     const info = await response.json();
     console.log(info["movies"]);
-    setMovies(info["movies"]);
-    setOrigMovieCount(info["movies"]);
+    var movies = info["movies"];
+
+    var list = new Set([10, 20, 30, 50, 40, 50]);
+    const newResults = movies.filter((movie) =>
+      list.has(movie.id)
+    );
+    console.log("newResults", newResults);
+    setMovies(newResults);
+    setOrigMovieCount(newResults);
   };
 
   const Search = (key) => {
@@ -37,17 +44,13 @@ function Home() {
       <h3>{movie.title}</h3>
       <p>{movie.year}</p>
       <p>{movie.plot}</p>
-      <form action="Movie/add">
-        <input type="hidden" name="id" value={movie.id} /> 
-      <input type = "submit" class="btn btn-primary" value="Add to my watchlist" /> 
-      </form>
     </div>
   </div>
   ));
 
   return (
     <div>
-
+      <h1> My Playlist </h1>
       <form class="form-inline my-2 my-lg-0">
       Search the movie by name <input class="form-control mr-sm-2" type="text" onChange={(event) => Search(event.target.value)} placeholder="Search" aria-label="Search" />
     </form>
@@ -56,4 +59,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Profile;

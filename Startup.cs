@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;  
+using System;  
 
 namespace DotNetAssignment
 {
@@ -36,6 +38,10 @@ namespace DotNetAssignment
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSession(options => {   
+                options.IdleTimeout = TimeSpan.FromMinutes(30);   
+            });  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +58,7 @@ namespace DotNetAssignment
                 app.UseHsts();
             }
 
+            app.UseSession();  
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

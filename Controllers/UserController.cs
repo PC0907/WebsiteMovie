@@ -47,6 +47,8 @@ namespace DotNetAssignment.Controllers
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, "Login");
 
+                HttpContext.Session.SetString("mail",user.mail);
+                Console.WriteLine(HttpContext.Session.GetString("mail"));  
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 return LocalRedirect("/");;
             }
