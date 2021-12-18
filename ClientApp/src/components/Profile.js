@@ -13,13 +13,18 @@ function Profile() {
   }, []);
 
   const fetchItems = async () => {
+    const url1 = "Movie/getMovies";
+    const response1 = await fetch(url1);
+    const data = await response1.json();
+    console.log(data);
+
     const url = "Movie.json";
     const response = await fetch(url);
     const info = await response.json();
     console.log(info["movies"]);
     var movies = info["movies"];
 
-    var list = new Set([10, 20, 30, 50, 40, 50]);
+    var list = new Set(data);
     const newResults = movies.filter((movie) =>
       list.has(movie.id)
     );

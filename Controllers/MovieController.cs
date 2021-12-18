@@ -11,6 +11,7 @@ using DotNetAssignment.Database;
 using System.Data.SQLite;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace DotNetAssignment.Controllers
 {
@@ -54,6 +55,44 @@ namespace DotNetAssignment.Controllers
             }
            return LocalRedirect("/");
            
+        }
+
+        [Authorize]
+        [HttpGet("getMovies")]
+        public List<int> GetMovies()
+        {
+            string mail = HttpContext.Session.GetString("mail");
+            List<int> Ids =  new List<int>();
+            DatabaseCon con = new DatabaseCon();
+            try
+            {
+                con.OpenConnection();
+                string query = "SELECT movie_id FROM playlist WHERE mail=@mail";
+                SQLiteCommand myCommand = new SQLiteCommand(query, con.myConnection);
+                myCommand.Parameters.AddWithValue("@mail", mail);
+                SQLiteDataReader result = myCommand.ExecuteReader();
+                if (result.HasRows)
+                {
+
+                    while (result.Read())
+                    {
+                        int id = Convert.ToInt32(result["movie_id"]);
+                        Ids.Add(id);
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+                Console.WriteLine("Cannot fetch movies");
+            }
+            finally
+            {
+                con.CloseConnetion();
+            }
+
+            Console.WriteLine(Ids);
+            return Ids;
         }
 
     }
